@@ -2,19 +2,19 @@ package gameOfLifeBDDProject;
 
 public class Field {	
 	private Cell[][] field;
-	private int height;
-	private int width;
+	private int row;
+	private int column;
 	
-	public Field(int height, int width) {
-		this.height = height;
-		this.width = width;
-		this.field = new Cell[height][width];
+	public Field(int row, int column) {
+		this.row = row;
+		this.column = column;
+		this.field = new Cell[row][column];
 		this.initField();
 	}
 	
 	private void initField() {
-		for (int r = 0; r < this.height; r++) {
-			for (int c = 0; c < this.width; c++) {
+		for (int r = 0; r < this.row; r++) {
+			for (int c = 0; c < this.column; c++) {
 				this.field[r][c] = new Cell(Cell.DEAD_CELL);
 			}
 		}
@@ -23,9 +23,9 @@ public class Field {
 	private int countLivingNeighboursCells(int row,int column) {
 		int livingCells = 0;
 		
-		for (int r = row - 1; r < row + 1; r++) {
-			for (int c = column - 1; c < column + 1; c++) {
-				if(!isCellOutsideOfField(r,c) && (r != row && c != column) && this.field[r][c].isCellAlive())
+		for (int r = row - 1; r <= row + 1; r++) {
+			for (int c = column - 1; c <= column + 1; c++) {
+				if(!isCellOutsideOfField(r,c) && (r != row || c != column) && this.field[r][c].isCellAlive())
 					livingCells++;
 			}
 		}
@@ -34,18 +34,16 @@ public class Field {
 	}
 	
 	private boolean isCellOutsideOfField(int row,int column) {
-		return ( row < 0 || row > this.height ) || ( column < 0 || column > this.width );
+		return ( row < 0 || row > this.row -1 ) || ( column < 0 || column > this.column -1 );
 	}
 	
 	public void nextGeneration() {
-		Cell[][] nextGenerationField = new Cell[this.height][this.width];
+		Cell[][] nextGenerationField = new Cell[this.row][this.column];
 		
-		for (int r = 0; r < this.height; r++) {
-			for (int c = 0; c < this.width; c++) {
+		for (int r = 0; r < this.row; r++) {
+			for (int c = 0; c < this.column; c++) {
 				
 				int livingNeighboursCells = countLivingNeighboursCells(r,c);
-				System.out.println(livingNeighboursCells);
-				System.out.println(r +" "+ c);
 
 				boolean isCellAlive = this.isCellAlive(r,c);
 				
@@ -93,7 +91,26 @@ public class Field {
 		}
 	}
 	
-	private boolean isCellAlive(int row,int column) {
+	public boolean isCellAlive(int row,int column) {
 		return this.field[row][column].isCellAlive();
 	}
+	
+	public void showField() {
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < column; j++) {
+				System.out.print(this.field[i][j].toString());
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+
 }

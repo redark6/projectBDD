@@ -22,5 +22,10 @@ public class Cell {
 	public boolean isCellAlive() {
 		return this.isAlive;
 	}
+	
+	@Override
+	public String toString() {
+		return isAlive ? "*" : ".";
+	}
 
 }
